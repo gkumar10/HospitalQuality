@@ -36,7 +36,7 @@ best <- function(state, outcome){
   ## Return hospital name in that state with lowest 30-day death rate
   ###use r1 to get row number in outcome-of-care-measure file. retrieve hospital name from column #1
   lowest <- suppressWarnings(min(as.numeric(rfile[r,c]), na.rm=TRUE))
-  r1 <- grep(lowest, rfile[r,c]) # find row number of the lowest value. this is row number is r vector.
+  r1 <- grep(lowest, rfile[r,c]) # find row number of the lowest value. this is row number in r vector.
   if (length(r1) > 1) {
     o1 <- order(rfile[r[r1],1])
     rfile[r[r1][o1[1]],1]

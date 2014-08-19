@@ -7,6 +7,8 @@ rankhospital <- function(state, outcome, num="best"){
   r1 <- NULL
   o1 <- NULL 
   n <- NULL #rank
+  readfile <- NULL
+  rfile <- NULL
   
   ## Read outcome data
   readfile <- read.csv("~/Coursera/HospitalQuality/outcome-of-care-measures.csv", colClasses="character", header=TRUE)
@@ -35,19 +37,25 @@ rankhospital <- function(state, outcome, num="best"){
     }
   }
   
-  if (num == "best") {
+  if (is.character(num) & (as.character(num) == "best")) {
     n <- 1
   } else {
-      if (num == "worst") {
+      if (is.character(num) & (as.character(num) == "worst")) {
         n <- length(r)
       } else {
-          if (num > length(r)) {
+          if (is.numeric(num) & (as.numeric(num) > length(r))) {
             print(NA)
+          } else {
+              n <- as.numeric(num)
           }
       }
   }
   
   ## Return hospital name in that state with the given rank 30-day death rate
+  rf1 <- suppressWarnings(order(as.numeric(rfile[r,c]))) # returns ordered data.frame
+  rfile[r[rf1[n]],1] #will return hospital name at n row
+  
+  
   
   
   
