@@ -3,12 +3,13 @@ rankhospital <- function(state, outcome, num="best"){
   #initialize
   r <- NULL
   c <- NULL
-  rf1 <- NULL
-  rf2 <- NULL 
+  lowest <- NULL
+  r1 <- NULL
+  o1 <- NULL 
   n <- NULL #rank
   readfile <- NULL
   rfile <- NULL
-  f <- FALSE # flag for condition where num > nrow
+  g1 <- NULL
   
   ## Read outcome data
   readfile <- read.csv("~/Coursera/HospitalQuality/outcome-of-care-measures.csv", colClasses="character", header=TRUE)
@@ -41,10 +42,10 @@ rankhospital <- function(state, outcome, num="best"){
     n <- 1
   } else {
       if (is.character(num) & (as.character(num) == "worst")) {
-        n <- length(r) - length(grep("not available", rfile[r,c], ignore.case=TRUE))
+        n <- length(r)
       } else {
           if (is.numeric(num) & (as.numeric(num) > length(r))) {
-            f <- TRUE
+            print(NA)
           } else {
               n <- as.numeric(num)
           }
@@ -52,12 +53,19 @@ rankhospital <- function(state, outcome, num="best"){
   }
   
   ## Return hospital name in that state with the given rank 30-day death rate
-  if (f) {
-    print(NA)
+  rf1 <- suppressWarnings(order(as.numeric(rfile[r,c]))) # returns ordered data.frame
+  #rfile[r[rf1[n]],1] #will return hospital name at n row
+  c1 <- rfile[r[rf1[n]],c] #get column value at n row to look for ties
+  print(c1)
+  g1 <- grep(c1,rfile[r[rf1],c]) #check for ties in column value; returns integer vector
+  print(length(g1))
+  if (length(g1) > 1) {
+    o1 <- order(rfile[r[rf1][g1],1])
+    print(o1)
+    rfile[r[rf1[n]],1]  
   } else {
-      rf1 <- rfile[r,]
-      rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1], na.last=TRUE),]))
-      rf2[n,1]    
+      rfile[r[rf1[n]],1]
   }
-    
+  rf2[order(as.numeric(rf2[,4]), rf2[,1]),]  
+  
 }
