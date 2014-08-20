@@ -17,7 +17,9 @@ rankall <- function(outcome, num = "best") {
   ## Read outcome data
   readfile <- read.csv("~/Coursera/HospitalQuality/outcome-of-care-measures.csv", colClasses="character", header=TRUE)
   rfile <- readfile[,c(2,7,11,17,23)] #read 5 columns relevant to this function
-  u <- unique(rfile[,2]) #returns vector with 54 states
+  uo <- order(unique((rfile[,2]))) #returns vector of length 54; unique ordered
+  u <- unique(rfile[,2]) #use uo[u]
+  
   
   ## Check that state and outcome are valid
   if (outcome == "heart attack") {
@@ -40,7 +42,7 @@ rankall <- function(outcome, num = "best") {
     r <- NULL
     f <- FALSE
     
-    r <- grep(u[i], rfile[,2], ignore.case=TRUE)
+    r <- grep(uo[u[i]], rfile[,2], ignore.case=TRUE)
     
     if (is.character(num) & (as.character(num) == "best")) {
       n <- 1
@@ -55,14 +57,15 @@ rankall <- function(outcome, num = "best") {
         }
       }
     }
-      
+    
+    rf1 <- rfile[r,]
+    rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1], na.last=TRUE),]))
+    
     if (f) {
       #print(<NA>)
       hos[i] <- "<NA>"
-      st[i] <- rf[n,2]
+      st[i] <- as.character(rf2[n,2])
     } else {
-      rf1 <- rfile[r,]
-      rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1], na.last=TRUE),]))
       hos[i] <- as.character(rf2[n,1])
       st[i] <- as.character(rf2[n,2])
     }
