@@ -10,8 +10,8 @@ rankall <- function(outcome, num = "best") {
   rfile <- NULL
   f <- FALSE # flag for condition where num > nrow
   u <- NULL #unique states
-  hos <- NULL
-  st <- NULL
+  hospital <- NULL
+  state <- NULL
   
   
   ## Read outcome data
@@ -61,13 +61,13 @@ rankall <- function(outcome, num = "best") {
     rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1]),]))
     
     if (f) {
-      hos[i] <- "<NA>"
-      st[i] <- as.character(rf2[n,2])
+      hospital[i] <- "<NA>"
+      state[i] <- as.character(rf2[n,2])
     } else {
-      hos[i] <- as.character(rf2[n,1])
-      st[i] <- as.character(rf2[n,2])
+      hospital[i] <- as.character(rf2[n,1])
+      state[i] <- as.character(rf2[n,2])
     }
   }
-  df <- data.frame(hos, st, stringsAsFactors = FALSE)
+  df <- data.frame(hospital, state, stringsAsFactors = FALSE)
   df[order(df[,2]),]
 }
