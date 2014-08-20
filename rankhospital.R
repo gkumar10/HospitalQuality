@@ -45,6 +45,8 @@ rankhospital <- function(state, outcome, num="best"){
       } else {
           if (is.numeric(num) & (as.numeric(num) > length(r))) {
             f <- TRUE
+            #n <- as.numeric(num)
+            n <- 1
           } else {
               n <- as.numeric(num)
           }
@@ -52,12 +54,16 @@ rankhospital <- function(state, outcome, num="best"){
   }
   
   ## Return hospital name in that state with the given rank 30-day death rate
+  rf1 <- rfile[r,]
+  #rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1], na.last=TRUE),]))
+  
   if (f) {
-    print(NA)
+    rf2 <- suppressWarnings(rf1[order(as.numeric(rf1[,c]),rf1[,1]),])
+    paste(n,"+", rf2[n,2])
+    
   } else {
-      rf1 <- rfile[r,]
-      rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1], na.last=TRUE),]))
-      rf2[n,1]    
+      rf2 <- suppressWarnings(na.omit(rf1[order(as.numeric(rf1[,c]),rf1[,1], na.last=TRUE),]))  
+      paste("~", rf2[n,1])
   }
     
 }
